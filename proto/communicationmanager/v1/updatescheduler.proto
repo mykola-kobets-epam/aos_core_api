@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+package communicationmanager.v1;
+
+service UpdateSchedulerService {
+    rpc StartFOTAUpdate(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc StartSOTAUpdate(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc SubscribeNotifications(google.protobuf.Empty) returns (stream SchedulerNotifications) {}
+}
+
+message SchedulerNotifications {
+    oneof SchedulerNotification {
+        UpdateStatus sota_status = 1;
+        UpdateStatus fota_status = 2;
+    }
+}
+
+message UpdateStatus {
+    UpdateState state = 1;
+    string error = 2;
+}
+
+enum UpdateState {
+    NO_UPDATE = 0;
+    DOWNLOADING = 1;
+    READY_TO_UPDATE = 2;
+    UPDATING = 3;
+}
