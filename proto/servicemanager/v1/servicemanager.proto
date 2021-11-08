@@ -6,8 +6,8 @@ import "google/protobuf/empty.proto";
 package servicemanager.v1;
 
 service SMService {
-    rpc SetUsers(Users) returns (google.protobuf.Empty) {}
-    rpc GetStatus(google.protobuf.Empty) returns (SMStatus) {}
+    rpc GetUsersStatus(Users) returns (SMStatus) {}
+    rpc GetAllStatus(google.protobuf.Empty) returns (SMStatus) {}
     rpc GetBoardConfigStatus(google.protobuf.Empty) returns (BoardConfigStatus) {}
     rpc CheckBoardConfig(BoardConfig) returns (BoardConfigStatus) {}
     rpc SetBoardConfig(BoardConfig) returns (google.protobuf.Empty) {}
@@ -17,7 +17,6 @@ service SMService {
     rpc SetServiceState(ServiceState) returns (google.protobuf.Empty) {}
     rpc OverrideEnvVars(OverrideEnvVarsRequest) returns (OverrideEnvVarStatus) {}
     rpc InstallLayer(InstallLayerRequest) returns (google.protobuf.Empty) {}
-    rpc RemoveLayer(RemoveLayerRequest) returns (google.protobuf.Empty) {}
     rpc SubscribeSMNotifications(google.protobuf.Empty) returns (stream SMNotifications) {}
     rpc GetSystemLog(SystemLogRequest) returns (google.protobuf.Empty) {}
     rpc GetServiceLog(ServiceLogRequest) returns (google.protobuf.Empty) {}
@@ -49,27 +48,30 @@ message ServiceStatus {
 }
 
 message InstallServiceRequest {
-    string url            = 1;
-    string service_id     = 2;
-    string provider_id    = 3;
-    uint64 aos_version    = 4;
-    string vendor_version = 5;
-    string alert_rules    = 6;
-    string description    = 7;
-    bytes sha256          = 8;
-    bytes sha512          = 9;
-    uint64 size           = 10;
+    Users users           = 1;
+    string url            = 2;
+    string service_id     = 3;
+    string provider_id    = 4;
+    uint64 aos_version    = 5;
+    string vendor_version = 6;
+    string alert_rules    = 7;
+    string description    = 8;
+    bytes sha256          = 9;
+    bytes sha512          = 10;
+    uint64 size           = 11;
 }
 
 message RemoveServiceRequest {
-    string service_id     = 1;
-    uint64 aos_version    = 2;
-    string vendor_version = 3;
+    Users users           = 1;
+    string service_id     = 2;
+    uint64 aos_version    = 3;
+    string vendor_version = 4;
 }
 
 message ServiceStateRequest {
-    string service_id = 1;
-    bool default      = 2;
+    Users users       = 1;
+    string service_id = 2;
+    bool default      = 3;
 }
 
 message StateAcceptance {
@@ -81,9 +83,10 @@ message StateAcceptance {
 }
 
 message ServiceState {
-    string service_id     = 1;
-    string state_checksum = 2;
-    bytes state           = 3;
+    Users users           = 1;
+    string service_id     = 2;
+    string state_checksum = 3;
+    bytes state           = 4;
 }
 
 message NewServiceState {
@@ -139,13 +142,6 @@ message InstallLayerRequest {
     bytes sha256          = 7;
     bytes sha512          = 8;
     uint64 size           = 9;
-}
-
-message RemoveLayerRequest {
-    string layer_id       = 1;
-    uint64 aos_version    = 2;
-    string vendor_version = 3;
-    string digest         = 4;
 }
 
 message SMNotifications {
