@@ -12,14 +12,46 @@ service UpdateSchedulerService {
 
 message SchedulerNotifications {
     oneof SchedulerNotification {
-        UpdateStatus sota_status = 1;
-        UpdateStatus fota_status = 2;
+        UpdateSOTAStatus sota_status = 1;
+        UpdateFOTAStatus fota_status = 2;
     }
 }
 
-message UpdateStatus {
+message UpdateFOTAStatus {
     UpdateState state = 1;
-    string error = 2;
+    repeated ComponentInfo components = 2;
+    BoardConfigInfo board_config = 3;
+    string error = 4;
+}
+
+message UpdateSOTAStatus {
+    UpdateState state = 1;
+    repeated ServiceInfo install_services = 2;
+    repeated ServiceInfo remove_services = 3;
+    repeated LayerInfo install_layers = 4;
+    repeated LayerInfo remove_layers = 5;
+    string error = 6;
+}
+
+message ComponentInfo {
+    string id = 1;
+    uint64 aos_version = 2;
+    string vendor_version = 3;
+}
+
+message BoardConfigInfo {
+    string vendor_version = 1;
+}
+
+message ServiceInfo {
+    string id = 1;
+    uint64 aos_version = 2;
+}
+
+message LayerInfo {
+    string id = 1;
+    uint64 aos_version = 2;
+    string digest = 3;
 }
 
 enum UpdateState {
