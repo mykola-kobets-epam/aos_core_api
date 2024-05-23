@@ -27,6 +27,8 @@ service IAMProvisioningService {
     rpc Clear(ClearRequest) returns (google.protobuf.Empty) {}
     rpc EncryptDisk(EncryptDiskRequest) returns (google.protobuf.Empty) {}
     rpc FinishProvisioning(google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc StartProvisioning(StartProvisioningRequest) returns (StartProvisioningResponse) {}
+    rpc Deprovision(DeprovisionRequest) returns (DeprovisionResponse) {}
 }
 
 service IAMCertificateService {
@@ -72,6 +74,30 @@ message Subjects {
 message PermissionsRequest {
     string secret               = 1;
     string functional_server_id = 2;
+}
+
+message ErrorInfo {
+    int32 aos_code  = 1;
+    int32 exit_code = 2;
+    string message  = 3;
+}
+
+message StartProvisioningRequest {
+    string node_id  = 1;
+    string password = 2;
+}
+
+message StartProvisioningResponse {
+    ErrorInfo error_info = 1;
+}
+
+message DeprovisionRequest {
+    string node_id  = 1;
+    string password = 2;
+}
+
+message DeprovisionResponse {
+    ErrorInfo error_info = 1;
 }
 
 message InstanceIdent {
