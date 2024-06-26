@@ -64,7 +64,8 @@ message ComponentStatus {
 
 message UpdateStatus {
     string                   node_id      = 1;
-    UpdateState              update_state = 2;
-    repeated ComponentStatus components   = 3;
-    common.v1.ErrorInfo      error        = 4;
+    uint32                   priority     = 2;
+    UpdateState              update_state = 3;
+    repeated ComponentStatus components   = 4;
+    common.v1.ErrorInfo      error        = 5;
 }
