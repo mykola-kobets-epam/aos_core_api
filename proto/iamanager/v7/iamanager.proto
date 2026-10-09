@@ -19,6 +19,7 @@ service IAMPublicCurrentNodeService {
 service IAMPublicCertService {
     rpc GetCert(GetCertRequest) returns (CertInfo) {}
     rpc GetAllCerts(GetCertRequest) returns (CertInfoList) {}
+    rpc GetRootCertType(google.protobuf.Empty) returns (RootCertType) {}
     rpc SubscribeCertsChanged(SubscribeCertsChangedRequest) returns (stream CertInfoList) {}
 }
 
@@ -111,6 +112,10 @@ message CertInfo {
 
 message CertInfoList {
     repeated CertInfo certs = 1;
+}
+
+message RootCertType {
+    string type = 1;
 }
 
 message SystemInfo {
